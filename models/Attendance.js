@@ -13,7 +13,7 @@ const attendanceSchema = new mongoose.Schema({
   },
   type: {
     type: String,
-    enum: ['full-day', 'half-day', 'holiday'],
+    enum: ['full-day', 'half-day', 'holiday', 'absent'],
     required: true
   },
   checkIn: {

@@ -12,7 +12,7 @@ const router = express.Router();
 router.post('/', [
   auth,
   authorizeEmployee,
-  body('type').isIn(['full-day', 'half-day', 'holiday']).withMessage('Invalid attendance type'),
+  body('type').isIn(['full-day', 'half-day', 'holiday', 'absent']).withMessage('Invalid attendance type'),
   body('notes').optional().trim()
 ], async (req, res) => {
   try {
@@ -54,8 +54,9 @@ router.post('/', [
       employee: req.user._id,
       type,
       notes,
-      checkIn: new Date(),
-      status: type === 'half-day' ? 'half-day' : 'present'
+      checkIn: type === 'absent' || type === 'holiday' ? undefined : new Date(),
+      status:
+        (type === 'holiday' || type === 'absent') ? 'absent' : 'present'
     });
 
     await attendance.save();

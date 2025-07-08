@@ -211,7 +211,7 @@ router.get('/me', auth, async (req, res) => {
         employeeId: null
       });
     }
-    
+
     // For regular users, get from database
     const user = await User.findById(req.user._id).select('-password');
     res.json(user);
