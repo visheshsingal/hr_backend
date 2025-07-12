@@ -137,9 +137,16 @@ router.get('/my', auth, authorizeEmployee, async (req, res) => {
     const query = { employee: req.user._id };
     
     if (startDate && endDate) {
+      // Create proper date range for the entire day
+      const startDateTime = new Date(startDate);
+      startDateTime.setHours(0, 0, 0, 0);
+      
+      const endDateTime = new Date(endDate);
+      endDateTime.setHours(23, 59, 59, 999);
+      
       query.date = {
-        $gte: new Date(startDate),
-        $lte: new Date(endDate)
+        $gte: startDateTime,
+        $lte: endDateTime
       };
     }
 
